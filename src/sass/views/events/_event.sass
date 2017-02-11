@@ -1,13 +1,28 @@
 =event-hover
-    cursor: pointer
+    background-color: darken($event, 10%)
+
+=expand-hover
+    color: $expand-hover
+    transform-origin: bottom center
+    transform: scale(1.5)
 
 .event
-    +cent-col
+    +cent-row
     background-color: $event
-    margin: 1rem
-    padding: 1rem
-    border-radius: 100%
-    width: 100px
-    height: 100px
+    margin: 0.5rem
+    padding: 0.5rem
+    width: 100%
+
     &:hover
         +event-hover
+
+    .expand
+        color: $expand
+        font-weight: bold
+        font-size: 1.5rem
+        cursor: pointer
+        padding-left: 1rem
+        padding-right: 1rem
+
+        &:hover
+            +expand-hover
