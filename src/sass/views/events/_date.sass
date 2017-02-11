@@ -1,6 +1,11 @@
-.date
-    +cent-row
-    .day
-        height: parent
+=date-label
+    > .day
         color: $date-day
+    > .date-num
+        color: $date-num
+
+.date
+    +cent-row-wrap
+    > .date-label
+        +date-label
     border-bottom: 1px solid $date-divider
