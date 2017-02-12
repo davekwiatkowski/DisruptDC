@@ -1,0 +1,27 @@
+html
+    include main_parts/_head
+    include main_parts/_header
+    body
+        .content
+            include views/_login
+
+            script.
+                function login() {
+                    let username = $('.username').value;
+                    let password = $('.password').value;
+
+                    if (!Parse.User.current()) {
+                        Parse.User.logIn(username, password)
+                            .then(
+                                function(user) {
+                                    $(window).trigger("loggedIn");
+                                }, function(error){
+
+                                }
+                            );
+                    }
+
+
+                }
+
+                jQuery('#submit-login').on('click', login);

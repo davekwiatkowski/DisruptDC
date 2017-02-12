@@ -1,0 +1,24 @@
+.view.login
+    +cent-col
+    position: fixed
+    form.loginform
+        +cent-col
+
+        *
+            outline: none
+            font-size: 1.25rem
+            &:active, &:focus
+                border-bottom: 1px solid $shadow-color
+        input
+            border: none
+        button
+            background: none
+            cursor: pointer
+            border: none
+            &:hover, &:active, &:focus
+                transform: scale(1.2)
+                color: #333
+            color: #aaa
+        > *
+            margin: 0.5rem
+            padding: 0.5rem
