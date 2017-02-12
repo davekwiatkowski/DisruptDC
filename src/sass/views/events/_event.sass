@@ -1,24 +1,32 @@
 =opened-event
-    height: 100%
-    position: fixed
+    overflow: hidden
+    min-height: 10rem
+    position: relative
     width: parent
+
     top: 0
     bottom: 0
     right: 0
     left: 0
+    
     z-index: 999
 
     padding: 0
 
-    ransform: scale(1)
+    transform: scale(1)
 
     +cent-col
 
     .info
         display: unset
+        opacity: 1
+        color: parent
 
     .expand
         display: none
+
+    .close
+        display: unset
 
 =event-hover
     background-color: darken($event, 10%)
@@ -36,9 +44,17 @@
     padding: 0.5rem
     width: 100%
     cursor: pointer
+    min-height: 0
 
     &:hover, &.opened
         +event-hover
+    
+    .close
+        text-align: right
+        display: none
+        font-weight: bold
+        &:hover
+            transform: scale(2)
 
     .expand
         color: $expand
@@ -54,6 +70,8 @@
 
     .info
         display: none
+        opacity: 0
+        color: lighten(#fff, 0%)
 
     &.opened
         +opened-event
