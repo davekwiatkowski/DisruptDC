@@ -9,16 +9,19 @@ html
                 function login(e) {
                     e.preventDefault();
 
-                    let username = $('.username').value;
-                    let password = $('.password').value;
+                    let username = $('.username').val();
+                    let password = $('.password').val();
+
+                    console.log(username);
 
                     Parse.User.logIn(username, password)
                         .then(
                             function(user) {
+                                console.log('logged in');
                                 $(window).trigger("loggedIn");
                                 injectPage('events.html');
                             }, function(error){
-
+                                console.warn(error);
                             }
                         );
 

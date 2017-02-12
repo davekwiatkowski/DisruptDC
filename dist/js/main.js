@@ -51,6 +51,14 @@
             injectPage('chat.html')
         });
 
+        $('.log-out').click(function() {
+            Parse.User.logOut().then(function() {
+                window.location.reload();
+            }, function(error) {
+                alert(error);
+            })
+        })
+
         if (Parse.User.current()) {
             injectPage('events.html');
         } else {
