@@ -2,10 +2,6 @@
     overflow: hidden
     min-height: 10rem
     position: relative
-    width: parent
-    padding: 0
-    padding-left: 1rem
-    padding-right: 1rem
 
     top: 0
     bottom: 0
@@ -22,6 +18,7 @@
         display: unset
         opacity: 1
         color: parent
+        height: auto
 
     .expand
         display: none
@@ -33,25 +30,29 @@
     transform: scale(1.05)
 
 =expand-hover
-    color: $expand-hover
-    transform-origin: bottom center
-    transform: scale(1.5)
+    color: #000
 
 .event
-    +cent-row
+    +cent-col
     text-align: left
-
+    overflow: none
+    padding-left: 1rem
+    padding-right: 1rem
+    
     background-color: darken($event, 10%)
     margin: 0.5rem
-    padding: 0.5rem
     width: 100%
     cursor: pointer
+
     min-height: 0
 
     &:hover, &.opened
         +event-hover
     
     .close
+        position: absolute
+        top: 0.5rem
+        right: 0.5rem
         text-align: right
         display: none
         font-weight: bold
@@ -59,12 +60,12 @@
         color: #000
 
     .expand
+        position: absoluste
         color: $expand
         font-weight: bold
         font-size: 1.5rem
-        padding-left: 1rem
-        padding-right: 3rem
         text-align: right
+
         &:hover
             +expand-hover
 
@@ -73,10 +74,12 @@
     .info
         display: none
         opacity: 0
+        height: 0
         color: lighten(#fff, 0%)
 
     > *
         width: 100%
+        min-width: 100%
 
     &.opened
         +opened-event
