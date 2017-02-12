@@ -3,14 +3,94 @@ html
     include main_parts/_header
     body
         .content
-            include views/_events
-                script.
-                    // button
-                    function handleEventClick(button) {
-                        $(button).toggleClass('opened');
+            .hidden
+                .date-template
+                    include views/events/_date.pug
+                .event-template
+                    include views/events/_event.pug
+            .view.events
+
+            script.
+                //do this in css
+                $('.hidden').css('display', 'none');
+
+                // button
+                function handleEventClick(button) {
+                    $(button).toggleClass('opened');
+                }
+
+                // events
+                $('.event').on('click', function () {
+                    handleEventClick(this);
+                });
+
+                function updateEvents() {
+                    var query = new Parse.Query('Event');
+                    query.ascending('startTime');
+                    query.find().then(displayEvents);
+                }
+
+                function displayEvents(events) {
+                    console.log(events);
+                    var days = [];
+                    var dayObj = null;
+                    for (var i = 0; i < events.length; i++) {
+                        var event = events[i];
+
+                        var startMoment = moment(event.get('startTime'));
+
+                        if (dayObj) {
+                            console.log(startMoment.format('L'), dayObj.start)
+                            if (startMoment.format('L') !== dayObj.start.format('L')) {
+                                days.push(dayObj);
+                                dayObj = null;
+                            }
+                        }
+
+                        if (!dayObj) {
+                            dayObj = {
+                                start: startMoment,
+                                events: []
+                            }
+                        }
+                        console.log(i);
+                        dayObj.events.push(event);
                     }
 
-                    // events
-                    $('.event').on('click', function () {
-                        handleEventClick(this);
-                    });
+                    days.push(dayObj);
+
+                    for (var i = 0; i < days.length; i++) {
+                        // -- Date -- //
+                        var $date = $('.hidden .date-template .date').clone(true);
+
+                        // Day
+                        $date.find('.day').text(days[i].start.format('ddd'));
+
+                        // Month & day
+                        $date.find('.date-num').text(days[i].start.format('MMM D'));
+
+                        for (var j = 0; j < days[i].events.length; j++) {
+                            // -- Event -- //
+                            var event = days[i].events[j];
+                            var $event = $('.hidden .event-template .event').clone(true);
+
+                            // Title
+                            $event.find('.icon').text(event.get('name'));
+
+                            // Time
+                            var time = moment(event.get('startTime'));
+                            $event.find('.info .time').text(time.format('h:mm A'));
+
+                            // Location
+                            $event.find('.info .place').text(event.get('location'));
+
+                            // Description
+                            $event.find('.info .description').text(event.get('description'));
+
+                            $date.find('.date-events').append($event);
+                        }
+                        $('.view.events').append($date);
+                    }
+                }
+
+                onParseReady(updateEvents);

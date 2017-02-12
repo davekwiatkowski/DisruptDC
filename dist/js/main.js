@@ -106,3 +106,13 @@
     window.onload = init;
     window.onresize = handleResize;
 })(jQuery);
+
+function onParseReady(func) {
+    if (Parse.User.current()) {
+        func();
+    } else {
+        $(window).on('loggedIn', function() {
+            func();
+        })
+    }
+}

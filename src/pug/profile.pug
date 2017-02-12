@@ -7,16 +7,10 @@ html
 
             script.
 
-                function updateData() {
+                function updateProfile() {
                     var user = Parse.User.current();
                     var name = user.get('firstName') + " " + user.get('lastName');
                     $('.name').text(name);
                 }
 
-                if (Parse.User.current()) {
-                    updateData();
-                } else {
-                    $(window).on('loggedIn', function() {
-                        updateData();
-                    })
-                }
+                onParseReady(updateProfile);
