@@ -3,7 +3,7 @@
     visibility: hidden
 
     &.shown
-        display: unset
+        display: inline-block
         visibility: visible
 
 #icon
@@ -25,9 +25,11 @@
     #drop-down
         +cent-col
         height: auto
+
         *
             display: unset
             visibility: visible
+            overflow: none
         height: 8rem
     #icon
         &:after
