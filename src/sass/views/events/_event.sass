@@ -17,7 +17,6 @@
     .info
         display: unset
         opacity: 1
-        color: parent
         height: auto
 
     .expand
@@ -48,8 +47,13 @@
         font-size: 1.25rem
         color: #fff
 
-    .time
-        color: #333
+    .time, .place
+        color: #fff
+
+    .place
+        border-bottom: 1px solid #fff
+        margin-bottom: 0.5rem
+        padding-bottom: 0.5rem
 
     min-height: 0
 
@@ -81,7 +85,7 @@
         display: none
         opacity: 0
         height: 0
-        color: lighten(#fff, 0%)
+
 
     > *
         width: 100%
