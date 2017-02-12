@@ -2,7 +2,6 @@
     "use strict";
 
     function injectPage(url) {
-
         var CONTAINER_SELECTOR = '.content';
 
         //Show loading indicator
@@ -89,6 +88,16 @@
         });
 
         injectPage('events.html');
+
+        Parse.initialize('disruptDC');
+        Parse.serverURL = 'http://52.33.25.43/parse/';
+
+        Parse.User.login('jmerizia', 'abcd1234')
+            .then(function(user) {
+                $(window).trigger("loggedIn");
+            }, function(error) {
+
+            });
     }
 
     window.onload = init;
