@@ -2,12 +2,34 @@
     +cent-col
     position: fixed
 
-    *
-        color: blue
+    .message-container
+        +cent-col
+        margin-bottom: 50px
+        max-width: 600px
+        width: 100%
+
+    .message
+        width: 100%
+
+        &.left
+
+
+        &.right
+            text-align: right
 
     .compose
         position: fixed
-        height: 100px
-        left: 0
+        width: 100%
+        max-width: 600px
+        text-align: center
         bottom: 0
-        right: 0
+
+        *
+            height: 50px
+
+        input
+            width: 80%
+            float: left
+
+        button
+            width: 20%

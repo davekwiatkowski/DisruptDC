@@ -3,9 +3,7 @@ html
     include main_parts/_header
     body
         .content
-
-            input.input(type="text")
-            button.send Send
+            include views/_chat
 
             script.
 
@@ -17,6 +15,7 @@ html
                         var message = new ChatMessage();
                         message.set('chat', chat);
                         message.set('message', msgTxt);
+                        message.set('sentBy', Parse.User.current())
                         input.val('');
                         message.save();
                     })
@@ -30,6 +29,12 @@ html
 
                 function addMessage(message) {
                     messages.push(message);
+
+                    var class = message.get('sentBy').id == Parse.User.current().id
+                        ? '.right'
+                        : '.left'
+
+
                 }
 
                 Promise.resolve().then(function() {
@@ -72,14 +77,10 @@ html
 
                         var q = new Parse.Query('ChatMessage');
                         q.equalTo('chat', chat);
+                        q.include('sentBy');
 
                         subscription = q.subscribe();
                         subscription.on('create', function(message) {
-                            msgs.push(message);
-                            console.log(message.get('message'));
-                        });
-
-                        subscription.on('update', function(message) {
                             msgs.push(message);
                             console.log(message.get('message'));
                         });
