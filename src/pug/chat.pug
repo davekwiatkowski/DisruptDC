@@ -3,10 +3,9 @@ html
     include main_parts/_header
     body
         .content
-            include views/_chat
 
-            input.input
-            button.send
+            input.input(type="text",style="margin-top: 100px")
+            button.send Send
 
             script.
 
@@ -18,23 +17,31 @@ html
                         var message = new ChatMessage();
                         message.set('chat', chat);
                         message.set('message', msgTxt);
+                        input.val('');
                         message.save();
                     })
                 }
 
-                var user = Parse.User.current();
-                var mentor = Parse.User.get('mentor');
-                var chatKey = user.id + mentor.id;
-
-                var chatQuery = new Parse.Query('Chat');
-                chatQuery.equalTo('key', chatKey);
-
+                var chatKey;
                 var chat;
                 var msgQuery;
                 var subscription;
                 var messages;
-                chatQuery.first()
-                    .then(function(c) {
+
+                Promise.resolve().then(function() {
+                    var userQuery = new Parse.Query(Parse.User);
+                    userQuery.include('mentor');
+                    return userQuery.get(Parse.User.current().id);
+                }).then(function(user) {
+
+                    var mentor = user.get('mentor');
+                    chatKey = user.id + mentor.id;
+
+                    var chatQuery = new Parse.Query('Chat');
+                    chatQuery.equalTo('key', chatKey);
+
+                    return chatQuery.first();
+                }).then(function(c) {
                         if (!c) {
                             var Chat = Parse.Object.extend('Chat');
                             c = new Chat();
@@ -57,9 +64,20 @@ html
                     })
                     .then(function(msgs) {
                         messages = msgs;
-                        var subscription = msgQuery.subscribe();
+                        console.log(msgs);
+
+                        var q = new Parse.Query('ChatMessage');
+                        q.equalTo('chat', chat);
+
+                        subscription = q.subscribe();
                         subscription.on('create', function(message) {
                             msgs.push(message);
                             console.log(message.get('message'));
                         });
+
+                        subscription.on('update', function(message) {
+                            msgs.push(message);
+                            console.log(message.get('message'));
+                        });
+
                     })
