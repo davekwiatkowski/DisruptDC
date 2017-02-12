@@ -12,11 +12,13 @@ html
                     var name = user.get('firstName') + " " + user.get('lastName');
                     $('.name').text(name);
 
-                    var randNum = Math.floor(Math.random() * 80);
-                    var url = "https://randomuser.me/api/portraits/women/"+randNum+".jpg";
                     $('.profile-image').css(
                         "background",
-                        "url("+url+") center center no-repeat");
+                        "url("+window.PROF_URL+") center center no-repeat");
+                    $('.profile-image').css(
+                        "background-size",
+                        "100%");
                 }
+
 
                 onParseReady(updateProfile);
