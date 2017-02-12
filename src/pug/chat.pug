@@ -4,3 +4,62 @@ html
     body
         .content
             include views/_chat
+
+            input.input
+            button.send
+
+            script.
+
+                function initSendButton(chat) {
+                    var input = $('.input');
+                    var ChatMessage = Parse.Object.extend('ChatMessage');
+                    $('.send').click(function() {
+                        var msgTxt = input.val();
+                        var message = new ChatMessage();
+                        message.set('chat', chat);
+                        message.set('message', msgTxt);
+                        message.save();
+                    })
+                }
+
+                var user = Parse.User.current();
+                var mentor = Parse.User.get('mentor');
+                var chatKey = user.id + mentor.id;
+
+                var chatQuery = new Parse.Query('Chat');
+                chatQuery.equalTo('key', chatKey);
+
+                var chat;
+                var msgQuery;
+                var subscription;
+                var messages;
+                chatQuery.first()
+                    .then(function(c) {
+                        if (!c) {
+                            var Chat = Parse.Object.extend('Chat');
+                            c = new Chat();
+                            c.set('key', chatKey);
+                            return c.save();
+                        } else {
+                            return Promise.resolve(c);
+                        }
+                    })
+                    .then(function(c) {
+                        chat = c;
+
+                        initSendButton(chat);
+
+                        msgQuery = new Parse.Query('ChatMessage');
+                        msgQuery.equalTo('chat', c);
+                        msgQuery.limit(20);
+
+                        return msgQuery.find();
+                    })
+                    .then(function(msgs) {
+                        messages = msgs;
+                        var subscription = msgQuery.subscribe();
+                        subscription.on('create', function(message) {
+                            msgs.push(message);
+                            console.log(message.get('message'));
+                        });
+                    })
