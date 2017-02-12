@@ -4,21 +4,20 @@
     form.loginform
         +cent-col
 
-        border-top: 0.25rem solid powderblue
-        padding-top: 1rem
-
         *
             outline: none
             font-size: 1.25rem
+            &:active, &:focus
+                border-bottom: 1px solid $shadow-color
         input
             border: none
         button
             background: none
             cursor: pointer
             border: none
-            &:hover, &:active
+            &:hover, &:active, &:focus
                 transform: scale(1.2)
-                color: powderblue
+                color: #333
             color: #aaa
         > *
             margin: 0.5rem
