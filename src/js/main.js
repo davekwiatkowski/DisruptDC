@@ -93,7 +93,7 @@
         Parse.serverURL = 'http://52.33.25.43/parse/';
 
         if (!Parse.User.current()) {
-            Parse.User.login('jmerizia', 'abcd1234')
+            Parse.User.logIn('jmerizia', 'abcd1234')
                 .then(function(user) {
                     $(window).trigger("loggedIn");
                 }, function(error) {
