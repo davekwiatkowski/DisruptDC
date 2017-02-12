@@ -3,6 +3,9 @@
     min-height: 10rem
     position: relative
     width: parent
+    padding: 0
+    padding-left: 1rem
+    padding-right: 1rem
 
     top: 0
     bottom: 0
@@ -10,8 +13,6 @@
     left: 0
     
     z-index: 999
-
-    padding: 0
 
     transform: scale(1.05)
 
@@ -29,7 +30,6 @@
         display: unset
 
 =event-hover
-    background-color: darken($event, 10%)
     transform: scale(1.05)
 
 =expand-hover
@@ -40,7 +40,8 @@
 .event
     +cent-row
     text-align: left
-    background-color: $event
+
+    background-color: darken($event, 10%)
     margin: 0.5rem
     padding: 0.5rem
     width: 100%
@@ -67,7 +68,7 @@
         &:hover
             +expand-hover
 
-    height: 3rem
+    height: 5rem
 
     .info
         display: none
@@ -75,8 +76,6 @@
         color: lighten(#fff, 0%)
 
     > *
-        padding-left: 1rem
-        padding-right: 1rem
         width: 100%
 
     &.opened
