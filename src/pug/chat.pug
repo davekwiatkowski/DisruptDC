@@ -10,7 +10,7 @@ html
                 function initSendButton(chat) {
                     var input = $('.input')
                     var ChatMessage = Parse.Object.extend('ChatMessage')
-                    $('.send').click(function() {
+                    $('.send').on('touchstart click', function() {
                         var msgTxt = input.val()
 
                         if (!msgTxt || msgTxt == "") {
