@@ -24,9 +24,9 @@ var addMessage = function(message) {
     var cl;
 
     if (message.get('sentBy').id === Parse.User.current().id) {
-        cl = '.right'
+        cl = 'right'
     } else {
-        cl = '.left'
+        cl = 'left'
     }
 
     var $msg = $('<div></div>')
@@ -37,14 +37,26 @@ var addMessage = function(message) {
     $('.message-container').append($msg)
 }
 
-Promise.resolve().then(function() {
+Parse.Promise.resolve().then(function() {
     var userQuery = new Parse.Query(Parse.User)
     userQuery.include('mentor')
     return userQuery.get(Parse.User.current().id)
 }).then(function(user) {
 
-    var mentor = user.get('mentor')
-    chatKey = user.id + mentor.id;
+    if (user.get('isMentor')) {
+        var query = new Parse.Query(Parse.User)
+        query.equalTo('mentor', user);
+        return query.first().then(function(u) {
+            chatKey = u.id + user.id;
+            return Parse.Promise.resolve(chatKey);
+        })
+    } else {
+        var mentor = user.get('mentor')
+        chatKey = user.id + mentor.id;
+        return Parse.Promise.resolve(chatKey);
+    }
+
+}).then(function(cK) {
 
     var chatQuery = new Parse.Query('Chat')
     chatQuery.equalTo('key', chatKey)
