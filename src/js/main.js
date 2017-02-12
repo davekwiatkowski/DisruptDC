@@ -69,6 +69,11 @@
         var randNum = Math.floor(Math.random() * 80);
         window.PROF_URL = "https://randomuser.me/api/portraits/men/"+randNum+".jpg";
 
+        // Profile Picture
+        var randNum2 = Math.floor(randNum + Math.random() * 60 + 1) % 80;
+        window.PROF_URL2 = "https://randomuser.me/api/portraits/men/"+randNum2+".jpg";
+        
+
     }
 
     window.onload = init;
