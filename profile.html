@@ -5,7 +5,9 @@
 
     var randNum = Math.floor(Math.random() * 80);
     var url = "https://randomuser.me/api/portraits/women/"+randNum+".jpg";
-    $('.profile-image').css('background', "url("+url+") center center no-repeat");
+    $('.profile-image').css(
+        "background",
+        "url("+url+") center center no-repeat");
 }
 
 onParseReady(updateProfile);</script></div></body></html>
