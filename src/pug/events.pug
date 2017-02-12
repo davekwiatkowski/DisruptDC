@@ -1,0 +1,16 @@
+html
+    include main_parts/_head
+    include main_parts/_header
+    body
+        .content
+            include views/_events
+                script.
+                    // button
+                    function handleEventClick(button) {
+                        $(button).toggleClass('opened');
+                    }
+
+                    // events
+                    $('.event').on('click', function () {
+                        handleEventClick(this);
+                    });

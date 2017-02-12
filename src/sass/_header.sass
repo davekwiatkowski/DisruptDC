@@ -1,0 +1,28 @@
+=responsive-header
+    @media all and (min-width: 930px)
+        position: absolute
+    @media all and (max-width: 929px)
+        top: 0
+        position: fixed
+        box-shadow: 0px 1px 1px 0px $shadow-color
+        background: $header-bg
+
+header
+    +cent-col
+    +responsive-header
+    *
+        font-size: 1.25rem
+        color: #555
+    z-index: 1
+    width: 100%    
+    nav
+        +cent-row-wrap
+        width: 100%
+        max-width: 80rem
+        > *
+            width: calc(50%)
+            padding: 1rem
+        .navigation-items
+            text-align: right
+            a
+                margin-left: 1rem

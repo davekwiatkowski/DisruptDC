@@ -1,0 +1,35 @@
+#burger, #no-burger, #drop-down *
+    display: none
+    visibility: hidden
+
+    &.shown
+        display: unset
+        visibility: visible
+
+#icon
+    &:after
+        content: '|||'
+    transform-origin: center right
+    transform: rotateZ(90deg) translateX(0.5rem) translateY(0.5rem)
+    
+    font-weight: bold
+    color: $burger-color
+
+#drop-down
+    height: 0
+
+#burger
+    cursor: pointer
+
+#burger.expand
+    #drop-down
+        +cent-col
+        height: auto
+        *
+            display: unset
+            visibility: visible
+        height: 5rem
+    #icon
+        &:after
+            content: 'X'
+        transform: rotateZ(0deg) scale(1.1) scale(1.25)

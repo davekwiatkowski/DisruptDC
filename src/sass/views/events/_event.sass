@@ -1,5 +1,28 @@
+=opened-event
+    height: 100%
+    position: fixed
+    width: parent
+    top: 0
+    bottom: 0
+    right: 0
+    left: 0
+    z-index: 999
+
+    padding: 0
+
+    ransform: scale(1)
+
+    +cent-col
+
+    .info
+        display: unset
+
+    .expand
+        display: none
+
 =event-hover
     background-color: darken($event, 10%)
+    transform: scale(1.05)
 
 =expand-hover
     color: $expand-hover
@@ -12,17 +35,25 @@
     margin: 0.5rem
     padding: 0.5rem
     width: 100%
+    cursor: pointer
 
-    &:hover
+    &:hover, &.opened
         +event-hover
 
     .expand
         color: $expand
         font-weight: bold
         font-size: 1.5rem
-        cursor: pointer
         padding-left: 1rem
         padding-right: 1rem
 
         &:hover
             +expand-hover
+
+    height: 3rem
+
+    .info
+        display: none
+
+    &.opened
+        +opened-event
