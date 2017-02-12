@@ -3,6 +3,11 @@
     var ChatMessage = Parse.Object.extend('ChatMessage')
     $('.send').click(function() {
         var msgTxt = input.val()
+
+        if (!msgTxt || msgTxt == "") {
+            return;
+        }
+
         var message = new ChatMessage()
         message.set('chat', chat)
         message.set('message', msgTxt)
@@ -35,6 +40,7 @@ var addMessage = function(message) {
     $msg.addClass('message')
 
     $('.message-container').append($msg)
+    $("html, body").animate({ scrollTop: $(document).height() }, "slow");
 }
 
 Parse.Promise.resolve().then(function() {
@@ -81,12 +87,12 @@ Parse.Promise.resolve().then(function() {
     msgQuery.equalTo('chat', c)
     msgQuery.limit(20)
     msgQuery.include('sentBy')
-
+    msgQuery.descending('createdAt')
 
     return msgQuery.find()
 })
 .then(function(msgs) {
-    messages = msgs
+    messages = msgs.reverse();
 
     messages.map(function(message) {
         addMessage(message)
