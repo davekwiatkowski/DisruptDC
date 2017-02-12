@@ -69,7 +69,7 @@
             hideBurger();
         }
     }
-    
+
     function init() {
         // main
         handleResize();
@@ -87,6 +87,8 @@
         $('.chat-select').on('click', function () {
             injectPage('chat.html')
         });
+
+        injectPage('events.html');
     }
 
     window.onload = init;
