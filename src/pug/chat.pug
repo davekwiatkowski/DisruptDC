@@ -10,7 +10,7 @@ html
                 function initSendButton(chat) {
                     var input = $('.input')
                     var ChatMessage = Parse.Object.extend('ChatMessage')
-                    $('.send').click(function() {
+                    $('.send').on('touchstart click', function() {
                         var msgTxt = input.val()
 
                         if (!msgTxt || msgTxt == "") {
@@ -29,7 +29,6 @@ html
                 var chatKey;
                 var chat;
                 var msgQuery;
-                var subscription;
                 var messages;
 
                 var addMessage = function(message) {
@@ -49,7 +48,7 @@ html
                     $msg.addClass('message')
 
                     $('.message-container').append($msg)
-                    $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+                    document.body.scrollTop = $(document).height();
                 }
 
                 Parse.Promise.resolve().then(function() {
@@ -111,8 +110,12 @@ html
                     q.equalTo('chat', chat)
                     q.include('sentBy')
 
-                    subscription = q.subscribe()
-                    subscription.on('create', function(message) {
+                    if (window.subscription) {
+                        window.subscription.unsubscribe();
+                    }
+
+                    window.subscription = q.subscribe()
+                    window.subscription.on('create', function(message) {
                         addMessage(message)
                     });
 
