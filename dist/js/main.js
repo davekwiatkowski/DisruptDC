@@ -65,6 +65,10 @@
             injectPage('login.html');
         }
 
+        // Profile Picture
+        var randNum = Math.floor(Math.random() * 80);
+        window.PROF_URL = "https://randomuser.me/api/portraits/men/"+randNum+".jpg";
+
     }
 
     window.onload = init;
