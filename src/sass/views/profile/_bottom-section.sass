@@ -2,10 +2,21 @@
     +cent-col
     padding: 1rem
     .interests
-        +cent-col
+        +cent-row-wrap
         .interest
-            padding-left: 1rem
-            padding-right: 1rem
+            padding-left: 0.5em
+            padding-right: 0.5em
+            padding-top: 0.25em
+            padding-bottom: 0.25em
+
+            @for $i from 0 to 10
+                &:nth-child(#{$i})
+                    background-color: darken(powderblue, $i * 10%)
+
+            margin-right: 1rem
+            margin-bottom: 1rem
+
+            color: #fff
 
     width: 100%
 
@@ -13,8 +24,11 @@
 
         > *
             padding-bottom: 1rem
+
+        
         *:not(h1)
             font-size: 1.2rem
+            
 
         margin-top: 2rem
         margin-bottom: 2rem
