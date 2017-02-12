@@ -5,61 +5,97 @@ html
         .content
             include views/_chat
 
-            input.input
-            button.send
-
             script.
 
                 function initSendButton(chat) {
-                    var input = $('.input');
-                    var ChatMessage = Parse.Object.extend('ChatMessage');
+                    var input = $('.input')
+                    var ChatMessage = Parse.Object.extend('ChatMessage')
                     $('.send').click(function() {
-                        var msgTxt = input.val();
-                        var message = new ChatMessage();
-                        message.set('chat', chat);
-                        message.set('message', msgTxt);
-                        message.save();
+                        var msgTxt = input.val()
+                        var message = new ChatMessage()
+                        message.set('chat', chat)
+                        message.set('message', msgTxt)
+                        message.set('sentBy', Parse.User.current())
+                        input.val('')
+                        message.save()
                     })
                 }
 
-                var user = Parse.User.current();
-                var mentor = Parse.User.get('mentor');
-                var chatKey = user.id + mentor.id;
-
-                var chatQuery = new Parse.Query('Chat');
-                chatQuery.equalTo('key', chatKey);
-
+                var chatKey;
                 var chat;
                 var msgQuery;
                 var subscription;
                 var messages;
-                chatQuery.first()
-                    .then(function(c) {
-                        if (!c) {
-                            var Chat = Parse.Object.extend('Chat');
-                            c = new Chat();
-                            c.set('key', chatKey);
-                            return c.save();
-                        } else {
-                            return Promise.resolve(c);
-                        }
-                    })
-                    .then(function(c) {
-                        chat = c;
 
-                        initSendButton(chat);
+                var addMessage = function(message) {
+                    messages.push(message)
 
-                        msgQuery = new Parse.Query('ChatMessage');
-                        msgQuery.equalTo('chat', c);
-                        msgQuery.limit(20);
+                    var cl;
 
-                        return msgQuery.find();
+                    if (message.get('sentBy').id === Parse.User.current().id) {
+                        cl = '.right'
+                    } else {
+                        cl = '.left'
+                    }
+
+                    var $msg = $('<div></div>')
+                    $msg.text(message.get('message'))
+                    $msg.addClass(cl)
+                    $msg.addClass('message')
+
+                    $('.message-container').append($msg)
+                }
+
+                Promise.resolve().then(function() {
+                    var userQuery = new Parse.Query(Parse.User)
+                    userQuery.include('mentor')
+                    return userQuery.get(Parse.User.current().id)
+                }).then(function(user) {
+                
+                    var mentor = user.get('mentor')
+                    chatKey = user.id + mentor.id;
+
+                    var chatQuery = new Parse.Query('Chat')
+                    chatQuery.equalTo('key', chatKey)
+
+                    return chatQuery.first()
+                }).then(function(c) {
+                    if (!c) {
+                        var Chat = Parse.Object.extend('Chat')
+                        c = new Chat()
+                        c.set('key', chatKey)
+                        return c.save()
+                    } else {
+                        return Parse.Promise.resolve(c)
+                    }
+                })
+                .then(function(c) {
+                    chat = c;
+
+                    initSendButton(chat)
+
+                    msgQuery = new Parse.Query('ChatMessage')
+                    msgQuery.equalTo('chat', c)
+                    msgQuery.limit(20)
+                    msgQuery.include('sentBy')
+
+
+                    return msgQuery.find()
+                })
+                .then(function(msgs) {
+                    messages = msgs
+
+                    messages.map(function(message) {
+                        addMessage(message)
                     })
-                    .then(function(msgs) {
-                        messages = msgs;
-                        var subscription = msgQuery.subscribe();
-                        subscription.on('create', function(message) {
-                            msgs.push(message);
-                            console.log(message.get('message'));
-                        });
-                    })
+
+                    var q = new Parse.Query('ChatMessage')
+                    q.equalTo('chat', chat)
+                    q.include('sentBy')
+
+                    subscription = q.subscribe()
+                    subscription.on('create', function(message) {
+                        addMessage(message)
+                    });
+
+                })
