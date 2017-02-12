@@ -6,21 +6,21 @@ html
             include views/_login
 
             script.
-                function login() {
+                function login(e) {
+                    e.preventDefault();
+
                     let username = $('.username').value;
                     let password = $('.password').value;
 
-                    if (!Parse.User.current()) {
-                        Parse.User.logIn(username, password)
-                            .then(
-                                function(user) {
-                                    $(window).trigger("loggedIn");
-                                }, function(error){
+                    Parse.User.logIn(username, password)
+                        .then(
+                            function(user) {
+                                $(window).trigger("loggedIn");
+                                injectPage('events.html');
+                            }, function(error){
 
-                                }
-                            );
-                    }
-
+                            }
+                        );
 
                 }
 
